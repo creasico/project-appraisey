@@ -1,0 +1,7 @@
+{
+  "files.associations": {
+    "**/php/**/*.conf": "ini",
+    "**/nginx/**/*.conf": "nginx",
+    "*.neon": "yaml"
+  }
+}

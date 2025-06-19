@@ -1,0 +1,75 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: .deploy/development/Dockerfile
+      args:
+        USER_ID: ${WWW_USER:-$(id -u)}
+        GROUP_ID: ${WWW_GROUP:-$(id -g)}
+    image: creasico/appraisey-app:latest
+    container_name: appraisey-app
+    ports:
+      - ${APP_PORT:-80}:8080
+      - ${DEV_PORT:-8000}:8000
+    # extra_hosts:
+    #   - host.docker.internal:host-gateway
+    env_file: .env.sail
+    environment:
+      APP_SERVICE: app
+      LARAVEL_SAIL: 1
+    volumes:
+      - .:/var/www/html
+    healthcheck:
+      test: [CMD, curl, -ksLfS, http://localhost:8080/up]
+      start_period: 15s
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      - pgsql
+      - valkey
+      - mailpit
+  pgsql:
+    image: postgres:17-alpine
+    container_name: appraisey-pgsql
+    ports:
+      - ${FORWARD_PGSQL_PORT:-5432}:5432
+    env_file: .env.sail
+    environment:
+      PGPASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - local-pgsql:/var/lib/postgresql/data
+      - ./vendor/laravel/sail/database/pgsql/create-testing-database.sql:/docker-entrypoint-initdb.d/10-create-testing-database.sql
+    healthcheck:
+      test: [CMD, pg_isready, -q, -d, '${DB_DATABASE}', -U, '${DB_USERNAME}']
+      retries: 3
+      timeout: 5s
+  valkey:
+    image: valkey/valkey:8.0-alpine
+    container_name: appraisey-valkey
+    env_file: .env.sail
+    volumes:
+      - local-valkey:/data
+    healthcheck:
+      test: [CMD, valkey-cli, ping]
+      timeout: 5s
+      retries: 3
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: appraisey-mail
+    ports:
+      - ${FORWARD_MAILPIT_DASHBOARD_PORT:-8025}:8025
+
+networks:
+  default:
+    name: appraisey-dev
+    enable_ipv6: false
+
+volumes:
+  local-pgsql:
+    driver: local
+  local-valkey:
+    driver: local

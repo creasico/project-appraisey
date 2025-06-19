@@ -1,0 +1,115 @@
+{
+  "name": "creasico/project-appraisey",
+  "description": "A simple tournament appraisal app.",
+  "type": "project",
+  "license": "AGPL-3.0-or-later",
+  "authors": [
+    {
+      "name": "PT. Creasi Tekno Solusi",
+      "homepage": "https://creasi.co"
+    }
+  ],
+  "funding": [
+    {
+      "type": "github",
+      "url": "https://github.com/sponsors/creasico"
+    }
+  ],
+  "support": {
+    "source": "https://github.com/creasico/project-appraisey",
+    "forum": "https://github.com/orgs/creasico/discussions"
+  },
+  "require": {
+    "php": "^8.2",
+    "fakerphp/faker": "^1.23",
+    "filament/filament": "^4.0",
+    "laravel/framework": "^12.0",
+    "laravel/horizon": "^5.33",
+    "laravel/tinker": "^2.10.1",
+    "sentry/sentry-laravel": "^4.15"
+  },
+  "require-dev": {
+    "barryvdh/laravel-debugbar": "^3.15",
+    "barryvdh/laravel-ide-helper": "^3.5",
+    "larastan/larastan": "*",
+    "laravel/pail": "^1.2.2",
+    "laravel/pint": "^1.13",
+    "laravel/sail": "^1.41",
+    "mockery/mockery": "^1.6",
+    "pestphp/pest": "^3.8",
+    "pestphp/pest-plugin-laravel": "^3.2",
+    "pestphp/pest-plugin-livewire": "^3.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "app/",
+      "Database\\Factories\\": "database/factories/",
+      "Database\\Seeders\\": "database/seeders/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "post-autoload-dump": [
+      "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+      "@php artisan package:discover --ansi",
+      "@php artisan filament:upgrade"
+    ],
+    "post-update-cmd": [
+      "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
+    ],
+    "post-root-package-install": [
+      "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+    ],
+    "post-create-project-cmd": [
+      "@php artisan key:generate --ansi",
+      "@php artisan migrate --graceful --ansi"
+    ],
+    "analyse": [
+      "phpstan analyse"
+    ],
+    "ide-helper": [
+      "@php artisan ide-helper:generate",
+      "@php artisan ide-helper:models -n"
+    ],
+    "lint": [
+      "pint --preset laravel --test --ansi"
+    ],
+    "test": [
+      "@php artisan config:clear --ansi",
+      "@php artisan test"
+    ],
+    "sail": [
+      "docker compose --env-file .env.sail"
+    ],
+    "sail:up": [
+      "docker compose --env-file .env.sail up -d"
+    ],
+    "sail:down": [
+      "docker compose --env-file .env.sail down"
+    ],
+    "sail:exec": [
+      "Composer\\Config::disableProcessTimeout",
+      "docker compose --env-file=.env.sail exec app"
+    ]
+  },
+  "extra": {
+    "laravel": {
+      "dont-discover": []
+    }
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "preferred-install": "dist",
+    "sort-packages": true,
+    "allow-plugins": {
+      "pestphp/pest-plugin": true,
+      "php-http/discovery": true
+    }
+  },
+  "minimum-stability": "beta",
+  "prefer-stable": true
+}
