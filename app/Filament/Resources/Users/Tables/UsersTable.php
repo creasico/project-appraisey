@@ -23,17 +23,8 @@ class UsersTable
                 TextColumn::make('email')
                     ->label(trans('filament-panels::auth/pages/edit-profile.form.email.label'))
                     ->searchable(),
-                TextColumn::make('email_verified_at')
-                    ->dateTime()
-                    ->sortable(),
-                TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('role')
+                    ->label(trans('user.field.role')),
             ])
             ->filters([
                 //
