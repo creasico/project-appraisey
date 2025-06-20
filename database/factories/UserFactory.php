@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Models\Person;
 use App\Support\Enums\UserRole;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
@@ -36,26 +37,31 @@ class UserFactory extends Factory
         ];
     }
 
+    public function withProfile(): static
+    {
+        return $this->has(Person::factory(), 'profile');
+    }
+
     /**
      * Indicate that the model's email address should be unverified.
      */
     public function unverified(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state([
             'email_verified_at' => null,
         ]);
     }
 
     public function asAdmin(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state([
             'role' => UserRole::Admin,
         ]);
     }
 
     public function asSuperAdmin(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state([
             'role' => UserRole::SuperAdmin,
         ]);
     }

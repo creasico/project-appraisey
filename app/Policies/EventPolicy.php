@@ -2,24 +2,25 @@
 
 namespace App\Policies;
 
+use App\Models\Event;
 use App\Models\User;
 
-class UserPolicy
+class EventPolicy
 {
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        return $user->role->isSuperAdmin();
+        return ! $user->role->isBasic();
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, User $model): bool
+    public function view(User $user, Event $event): bool
     {
-        return $user->role->isSuperAdmin();
+        return ! $user->role->isBasic();
     }
 
     /**
@@ -27,22 +28,22 @@ class UserPolicy
      */
     public function create(User $user): bool
     {
-        return $user->role->isSuperAdmin();
+        return ! $user->role->isBasic();
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, User $model): bool
+    public function update(User $user, Event $event): bool
     {
-        return $user->is($model) || $user->role->isSuperAdmin();
+        return ! $user->role->isBasic();
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, User $model): bool
+    public function delete(User $user, Event $event): bool
     {
-        return $user->is($model) || $user->role->isSuperAdmin();
+        return $user->role->isSuperAdmin();
     }
 }

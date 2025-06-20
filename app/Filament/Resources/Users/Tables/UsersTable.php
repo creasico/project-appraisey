@@ -10,6 +10,7 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Auth;
 
 class UsersTable
 {
@@ -33,7 +34,7 @@ class UsersTable
                 ActionGroup::make([
                     // ViewAction::make(),
                     EditAction::make(),
-                ])->visible(fn (User $record) => $record->isNot(auth()->user())),
+                ])->visible(fn (User $record) => $record->isNot(Auth::user())),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
