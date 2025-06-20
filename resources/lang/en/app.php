@@ -1,3 +1,8 @@
 <?php
 
-return [];
+return [
+    'navigation' => [
+        'manage' => 'Manage',
+        'system' => 'System',
+    ],
+];
