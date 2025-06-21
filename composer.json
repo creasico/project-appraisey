@@ -80,7 +80,7 @@
     ],
     "test": [
       "@php artisan config:clear --ansi",
-      "@php artisan test"
+      "@php artisan test --env=testing"
     ],
     "sail": [
       "docker compose --env-file .env.sail"
@@ -91,9 +91,13 @@
     "sail:down": [
       "docker compose --env-file .env.sail down"
     ],
+    "sail:test": [
+      "Composer\\Config::disableProcessTimeout",
+      "docker compose --env-file .env.sail exec app artisan test --env=testing"
+    ],
     "sail:exec": [
       "Composer\\Config::disableProcessTimeout",
-      "docker compose --env-file=.env.sail exec app"
+      "docker compose --env-file .env.sail exec app"
     ]
   },
   "extra": {
