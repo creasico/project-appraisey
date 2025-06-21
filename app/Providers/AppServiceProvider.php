@@ -24,6 +24,8 @@ class AppServiceProvider extends ServiceProvider
 
     /**
      * Bootstrap any application services.
+     *
+     * @codeCoverageIgnore
      */
     public function boot(): void
     {

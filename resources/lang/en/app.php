@@ -1,3 +1,14 @@
 <?php
 
-return [];
+return [
+
+    'gender' => [
+        'male' => 'Male',
+        'female' => 'Female',
+    ],
+
+    'navigation' => [
+        'manage' => 'Manage',
+        'system' => 'System',
+    ],
+];

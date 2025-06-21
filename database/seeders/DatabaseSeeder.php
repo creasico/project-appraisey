@@ -16,6 +16,8 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->createAdminUser();
+
+        $this->call(DummySeeder::class);
     }
 
     private function createAdminUser(): void
@@ -24,8 +26,13 @@ class DatabaseSeeder extends Seeder
             return;
         }
 
-        User::factory()->create([
-            'name' => 'Administrator',
+        User::factory()->asSuperAdmin()->create([
+            'name' => 'Super Admin',
+            'email' => 'superadmin@example.com',
+        ]);
+
+        User::factory()->asAdmin()->create([
+            'name' => 'Admin',
             'email' => 'admin@example.com',
         ]);
     }
