@@ -16,6 +16,8 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->createAdminUser();
+
+        $this->call(DummySeeder::class);
     }
 
     private function createAdminUser(): void
