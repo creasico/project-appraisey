@@ -39,7 +39,7 @@ class Person extends Model
     public function participations(): BelongsToMany
     {
         return $this->belongsToMany(Event::class, Participation::class, foreignPivotKey: 'participant_id')
-            ->withPivot(['level'])
+            ->withPivot(['number', 'level', 'attrs'])
             ->as('participation');
     }
 }

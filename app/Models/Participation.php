@@ -10,10 +10,13 @@ class Participation extends Pivot
 {
     protected $table = 'participations';
 
+    public $timestamps = false;
+
     protected function casts()
     {
         return [
             'level' => AthleteLevel::class,
+            'attrs' => 'array',
         ];
     }
 

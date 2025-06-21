@@ -14,13 +14,20 @@ class Event extends Model
 
     use Helpers\WithSchedule;
 
+    protected function casts()
+    {
+        return [
+            'attrs' => 'array',
+        ];
+    }
+
     /**
      * @return BelongsToMany<Person, Event, Participation, 'participation'>
      */
     public function participants(): BelongsToMany
     {
         return $this->belongsToMany(Person::class, Participation::class, relatedPivotKey: 'participant_id')
-            ->withPivot(['level'])
+            ->withPivot(['number', 'level', 'attrs'])
             ->as('participation');
     }
 }

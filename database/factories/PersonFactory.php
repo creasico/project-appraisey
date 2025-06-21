@@ -24,21 +24,31 @@ class PersonFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fn (array $attr) => implode(' ', [
-                fake()->firstName($attr['gender'] ?? self::$gender),
-                fake()->lastName($attr['gender'] ?? self::$gender),
+            'name' => fn (array $attrs) => implode(' ', [
+                fake()->firstName($attrs['gender']),
+                fake()->lastName($attrs['gender']),
             ]),
             'gender' => $this->fakeGender(),
             'level' => AthleteLevel::KhususI,
         ];
     }
 
+    /**
+     * @param  (\Closure(): int)|int|null  $count
+     * @param  (\Closure(array, \App\Models\Person): array<string, mixed>)|array<string, mixed>|null  $state
+     */
     public function withParticipations(
         \Closure|int|null $count = null,
+        \Closure|array|null $state = null,
     ): static {
-        return $this->hasAttached(Event::factory(count: value($count)), fn (Person $model) => [
-            'level' => $model->level,
-        ], 'participations');
+        return $this->hasAttached(
+            Event::factory(count: value($count))->state($state),
+            fn (Person $model) => [
+                'number' => fake()->numerify('###'),
+                'level' => $model->level,
+            ],
+            'participations'
+        );
     }
 
     public function withUser(): static

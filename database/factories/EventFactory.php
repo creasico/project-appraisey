@@ -22,7 +22,7 @@ class EventFactory extends Factory
         return [
             'title' => (string) str(fake()->words(asText: true))->title(),
             'description' => (string) str(fake()->words(10, true))->ucfirst(),
-            'attr' => null,
+            'attrs' => null,
             'started_at' => fake()->dateTimeThisMonth(),
             'finished_at' => fn (array $attrs) => $attrs['started_at']
                 ? fake()->dateTimeInInterval($attrs['started_at'], '+1 week')
@@ -33,13 +33,23 @@ class EventFactory extends Factory
         ];
     }
 
+    /**
+     * @param  (\Closure(): int)|int|null  $count
+     * @param  (\Closure(array, \App\Models\Event): array<string, mixed>)|array<string, mixed>|null  $state
+     */
     public function withParticipants(
         \Closure|int|null $count = null,
         AthleteLevel $level = AthleteLevel::KhususI,
+        \Closure|array|null $state = null,
     ): static {
-        return $this->hasAttached(Person::factory(count: value($count))->withLevel($level), [
-            'level' => $level,
-        ], 'participants');
+        return $this->hasAttached(
+            Person::factory(count: value($count))->withLevel($level)->state($state),
+            [
+                'number' => fake()->numerify('###'),
+                'level' => $level,
+            ],
+            'participants'
+        );
     }
 
     public function withSchedule(
