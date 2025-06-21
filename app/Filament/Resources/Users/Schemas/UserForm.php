@@ -17,13 +17,16 @@ class UserForm
                 TextInput::make('name')
                     ->label(trans('filament-panels::auth/pages/edit-profile.form.name.label'))
                     ->required(),
+
                 TextInput::make('email')
                     ->label(trans('filament-panels::auth/pages/edit-profile.form.email.label'))
                     ->email()
                     ->required(),
+
                 Select::make('role')
                     ->label(trans('user.field.role'))
                     ->options(UserRole::class),
+
                 TextInput::make('password')
                     ->password()
                     ->required(),
