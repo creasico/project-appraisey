@@ -10,13 +10,13 @@ trait WithGender
 
     private function fakeGender()
     {
-        return self::$gender ??= fake()->randomElement(Gender::cases());
+        return fake()->randomElement(Gender::cases());
     }
 
     public function withGender(Gender $gender): static
     {
         return $this->state([
-            'gender' => self::$gender ??= $gender,
+            'gender' => $gender,
         ]);
     }
 }

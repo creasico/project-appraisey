@@ -20,8 +20,8 @@ class EventFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => fake()->words(asText: true),
-            'description' => null,
+            'title' => (string) str(fake()->words(asText: true))->title(),
+            'description' => (string) str(fake()->words(10, true))->ucfirst(),
             'attr' => null,
             'started_at' => fake()->dateTimeThisMonth(),
             'finished_at' => fn (array $attrs) => $attrs['started_at']
@@ -43,14 +43,14 @@ class EventFactory extends Factory
     }
 
     public function withSchedule(
-        \DateTimeInterface|string|null $startedAt = null,
-        \DateTimeInterface|string|null $finishedAt = null,
-        \DateTimeInterface|string|null $publishedAt = null,
+        \Closure|\DateTimeInterface|string|null $startedAt = null,
+        \Closure|\DateTimeInterface|string|null $finishedAt = null,
+        \Closure|\DateTimeInterface|string|null $publishedAt = null,
     ): static {
-        return $this->state([
-            'started_at' => is_string($startedAt) ? Carbon::parse($startedAt) : $startedAt,
-            'finished_at' => is_string($finishedAt) ? Carbon::parse($finishedAt) : $finishedAt,
-            'published_at' => is_string($publishedAt) ? Carbon::parse($publishedAt) : $publishedAt,
+        return $this->state(fn (array $attrs) => [
+            'started_at' => is_string($startedAt) ? Carbon::parse($startedAt) : value($startedAt, $attrs),
+            'finished_at' => is_string($finishedAt) ? Carbon::parse($finishedAt) : value($finishedAt, $attrs),
+            'published_at' => is_string($publishedAt) ? Carbon::parse($publishedAt) : value($publishedAt, $attrs),
         ]);
     }
 }
