@@ -3,9 +3,6 @@
 namespace App\Filament\Resources\Events\Tables;
 
 use App\Models\Event;
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
 use Filament\Tables\Columns\ColumnGroup;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -13,10 +10,10 @@ use Illuminate\Support\HtmlString;
 
 class EventsTable
 {
-    public static function configure(Table $table): Table
+    public static function configure(Table $table, bool $athlete = false): Table
     {
         return $table
-            ->defaultSort('created_at', 'desc')
+            ->defaultSort('started_at', 'desc')
             ->columns([
                 TextColumn::make('title')
                     ->label(trans('event.field.title'))
@@ -34,7 +31,8 @@ class EventsTable
                     ->counts(['participants as participant_count'])
                     ->numeric()
                     ->alignCenter()
-                    ->width('10%'),
+                    ->width('10%')
+                    ->hidden(fn () => $athlete),
 
                 ColumnGroup::make(trans('event.schedule_section.label'), [
                     TextColumn::make('started_at')
@@ -59,17 +57,6 @@ class EventsTable
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-            ])
-            ->filters([
-                //
-            ])
-            ->recordActions([
-                EditAction::make(),
-            ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
             ]);
     }
 }

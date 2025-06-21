@@ -12,6 +12,11 @@ use App\Filament\Resources\People\Tables\PeopleTable;
 use App\Models\Person;
 use App\View\Navigations\GroupManage;
 use BackedEnum;
+use Filament\Actions\ActionGroup;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -39,13 +44,24 @@ class PersonResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return PeopleTable::configure($table);
+        return PeopleTable::configure($table)
+            ->recordActions([
+                ActionGroup::make([
+                    EditAction::make(),
+                    DeleteAction::make(),
+                ]),
+            ])
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
+                ]),
+            ]);
     }
 
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\ParticipationsRelationManager::class,
         ];
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Events\Schemas;
 
+use App\Models\Event;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -22,11 +23,13 @@ class EventForm
                         TextInput::make('title')
                             ->label(trans('event.field.title'))
                             ->autofocus()
-                            ->required(),
+                            ->required()
+                            ->disabled(fn (Event $record) => $record->is_started),
 
                         Textarea::make('description')
                             ->label(trans('event.field.description'))
-                            ->rows(5),
+                            ->rows(5)
+                            ->disabled(fn (Event $record) => $record->is_started),
                     ])->contained(false),
 
                     Section::make([
@@ -35,15 +38,18 @@ class EventForm
 
                         DateTimePicker::make('published_at')
                             ->label(trans('event.field.published_at'))
-                            ->seconds(false),
+                            ->seconds(false)
+                            ->disabled(fn (Event $record) => $record->is_started),
 
                         DateTimePicker::make('started_at')
                             ->label(trans('event.field.started_at'))
-                            ->seconds(false),
+                            ->seconds(false)
+                            ->disabled(fn (Event $record) => $record->is_started),
 
                         DateTimePicker::make('finished_at')
                             ->label(trans('event.field.finished_at'))
-                            ->seconds(false),
+                            ->seconds(false)
+                            ->disabled(fn (Event $record) => $record->is_started),
                     ])->contained(false)->grow(false),
                 ])->from('md'),
             ]);

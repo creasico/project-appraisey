@@ -21,6 +21,7 @@ use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class AdminPanelProvider extends PanelProvider
@@ -45,7 +46,7 @@ class AdminPanelProvider extends PanelProvider
                 Pages\Dashboard::class,
             ])
             ->userMenuItems([
-                'profile' => fn (Action $action) => $action->label(auth()->user()->name),
+                'profile' => fn (Action $action) => $action->label(Auth::user()->name),
             ])
             ->navigationGroups([
                 NavigationGroup::make(Navigations\GroupManage::getNavigationGroup())->collapsible(false),

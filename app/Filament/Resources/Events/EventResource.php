@@ -12,6 +12,10 @@ use App\Filament\Resources\Events\Tables\EventsTable;
 use App\Models\Event;
 use App\View\Navigations\GroupManage;
 use BackedEnum;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -39,13 +43,28 @@ class EventResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return EventsTable::configure($table);
+        return EventsTable::configure($table)
+            ->filters([
+                //
+            ])
+            ->recordActions([
+                EditAction::make()
+                    ->hidden(fn (Event $record) => $record->is_finished),
+
+                ViewAction::make()
+                    ->visible(fn (Event $record) => $record->is_finished),
+            ])
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
+                ]),
+            ]);
     }
 
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\ParticipantsRelationManager::class,
         ];
     }
 

@@ -4,9 +4,6 @@ namespace App\Filament\Resources\People\Tables;
 
 use App\Support\Enums\AthleteLevel;
 use App\Support\Enums\Gender;
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
@@ -16,6 +13,7 @@ class PeopleTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->recordTitleAttribute('name')
             ->columns([
                 TextColumn::make('name')
                     ->label(trans('person.field.name'))
@@ -49,14 +47,6 @@ class PeopleTable
 
                 SelectFilter::make('level')
                     ->options(AthleteLevel::class),
-            ])
-            ->recordActions([
-                EditAction::make(),
-            ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
             ]);
     }
 }

@@ -16,10 +16,10 @@ beforeEach(function () {
 });
 
 it('can render the list page', function () {
-    // $records = Person::factory(count: 10)->createMany();
+    $records = Person::factory(count: 5)->createMany();
     $page = livewire(ListPeople::class)->assertOk();
 
-    // $page->assertCanSeeTableRecords($records);
+    $page->assertCanSeeTableRecords($records);
 });
 
 it('can render the view page', function () {

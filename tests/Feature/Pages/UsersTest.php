@@ -22,10 +22,10 @@ describe('superadmin', function () {
     });
 
     it('can render the list page', function () {
-        // $records = User::factory(count: 10)->createMany();
+        $records = User::factory(count: 5)->createMany();
         $page = livewire(ListUsers::class)->assertOk();
 
-        // $page->assertCanSeeTableRecords($records);
+        $page->assertCanSeeTableRecords($records);
     });
 
     it('can render the view page', function () {

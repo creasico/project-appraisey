@@ -16,7 +16,7 @@ beforeEach(function () {
 });
 
 it('can render the list page', function () {
-    $records = Event::factory(count: 10)->createMany();
+    $records = Event::factory(count: 5)->createMany();
     $page = livewire(ListEvents::class)->assertOk();
 
     $page->assertCanSeeTableRecords($records);
